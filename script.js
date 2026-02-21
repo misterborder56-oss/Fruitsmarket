@@ -1,10 +1,10 @@
 // ============================
-// SUPABASE
+// SUPABASE CONFIG REAL
 // ============================
 
 const supabase = window.supabase.createClient(
-  "TU_URL",
-  "TU_PUBLIC_KEY"
+  "https://bgqrdyxkaxotfyleozor.supabase.co",
+  "sb_publishable_lu2RhjWQVjGXHhwyJhLjQg_t3ZYUvVm"
 );
 
 // ============================
@@ -73,55 +73,20 @@ const frutas = [
 ];
 
 // ============================
-// CREAR SLOTS
+// LOGIN
 // ============================
 
-function crearSlots(container){
-  for(let i=0;i<4;i++){
-    const slot=document.createElement("div");
-    slot.classList.add("slot");
-    slot.addEventListener("click",()=>abrirSelector(slot));
-    container.appendChild(slot);
+loginBtn.addEventListener("click", () => {
+  if (!nombreInput.value || !numberInput.value) {
+    alert("Completa los datos");
+    return;
   }
-}
 
-crearSlots(dasDiv);
-crearSlots(quieresDiv);
+  usuarioActual = nombreInput.value;
+  numeroActual = numberInput.value;
 
-// ============================
-// SELECTOR
-// ============================
+  loginBox.style.display = "none";
+  panel.style.display = "block";
 
-function abrirSelector(slot){
-
-  const fondo=document.createElement("div");
-  fondo.style.position="fixed";
-  fondo.style.top="0";
-  fondo.style.left="0";
-  fondo.style.width="100%";
-  fondo.style.height="100%";
-  fondo.style.background="rgba(0,0,0,0.9)";
-  fondo.style.display="grid";
-  fondo.style.gridTemplateColumns="repeat(6,70px)";
-  fondo.style.gap="10px";
-  fondo.style.padding="20px";
-  fondo.style.overflowY="scroll";
-  fondo.style.zIndex="999";
-
-  frutas.forEach(img=>{
-    const fruta=document.createElement("img");
-    fruta.src=img;
-    fruta.style.width="70px";
-    fruta.style.cursor="pointer";
-
-    fruta.addEventListener("click",()=>{
-      slot.innerHTML=`<img src="${img}" width="60">`;
-      slot.dataset.img=img;
-      document.body.removeChild(fondo);
-    });
-
-    fondo.appendChild(fruta);
-  });
-
-  document.body.appendChild(fondo);
-}
+  cargarOfertas();
+});
