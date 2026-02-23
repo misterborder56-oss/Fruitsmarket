@@ -1,5 +1,5 @@
 // ============================
-// SUPABASE
+// SUPABASE CONFIG REAL
 // ============================
 
 const supabase = window.supabase.createClient(
@@ -27,7 +27,7 @@ let usuarioActual = null;
 let numeroActual = null;
 
 // ============================
-// FRUTAS (tus imágenes)
+// 🔥 TODAS LAS FRUTAS
 // ============================
 
 const frutas = [
@@ -40,7 +40,36 @@ const frutas = [
 "https://i.ibb.co/vCjjRYQc/image-processing20250905-1-5b7b3b-36.jpg",
 "https://i.ibb.co/wrBFt6Ns/image-processing20250905-1-5b7b3b-35.jpg",
 "https://i.ibb.co/B56HbSWk/image-processing20250905-1-5b7b3b-34.jpg",
-"https://i.ibb.co/vCKtgj95/image-processing20250905-1-5b7b3b-33.jpg"
+"https://i.ibb.co/vCKtgj95/image-processing20250905-1-5b7b3b-33.jpg",
+"https://i.ibb.co/4R5NkdCg/image-processing20250905-1-5b7b3b-32.jpg",
+"https://i.ibb.co/MD50TN3c/image-processing20250905-1-5b7b3b-31.jpg",
+"https://i.ibb.co/6004qncx/image-processing20250905-1-5b7b3b-30.jpg",
+"https://i.ibb.co/9mf3twFp/image-processing20250905-1-5b7b3b-29.jpg",
+"https://i.ibb.co/7dyd3gcM/image-processing20250905-1-5b7b3b-28.jpg",
+"https://i.ibb.co/N2HP9D2w/image-processing20250905-1-5b7b3b-27.jpg",
+"https://i.ibb.co/zCYdwy5/image-processing20250905-1-5b7b3b-26.jpg",
+"https://i.ibb.co/Z1dLxCh8/image-processing20250905-1-5b7b3b-25.jpg",
+"https://i.ibb.co/HLyhYNGL/image-processing20250905-1-5b7b3b-24.jpg",
+"https://i.ibb.co/CpzyxBGK/image-processing20250905-1-5b7b3b-23.jpg",
+"https://i.ibb.co/bM2pvzzN/image-processing20250905-1-5b7b3b-22.jpg",
+"https://i.ibb.co/WpjPw3F6/image-processing20250905-1-5b7b3b-21.jpg",
+"https://i.ibb.co/dsR2TwgS/image-processing20250905-1-5b7b3b-20.jpg",
+"https://i.ibb.co/PV4KHKn/image-processing20250905-1-5b7b3b-19.jpg",
+"https://i.ibb.co/KjLk9zSg/image-processing20250905-1-5b7b3b-17.jpg",
+"https://i.ibb.co/w2DR1pJ/image-processing20250905-1-5b7b3b-16.jpg",
+"https://i.ibb.co/Hft7dzqs/image-processing20250905-1-5b7b3b-15.jpg",
+"https://i.ibb.co/d0KNqBpr/image-processing20250905-1-5b7b3b-14.jpg",
+"https://i.ibb.co/Lb5zCKG/image-processing20250905-1-5b7b3b-13.jpg",
+"https://i.ibb.co/S7cf7BVj/image-processing20250905-1-5b7b3b-12.jpg",
+"https://i.ibb.co/5xsPjtcs/image-processing20250905-1-5b7b3b-11.jpg",
+"https://i.ibb.co/TqhjKvDn/image-processing20250905-1-5b7b3b-10.jpg",
+"https://i.ibb.co/yBFXGbzP/image-processing20250905-1-5b7b3b-9.jpg",
+"https://i.ibb.co/rf483Kd9/image-processing20250905-1-5b7b3b-8.jpg",
+"https://i.ibb.co/TqhyyMsf/image-processing20250905-1-5b7b3b-5.jpg",
+"https://i.ibb.co/9Hq0y39r/image-processing20250905-1-5b7b3b-4.jpg",
+"https://i.ibb.co/r2S59z61/image-processing20250905-1-5b7b3b-3.jpg",
+"https://i.ibb.co/JbFhMZc/image-processing20250905-1-5b7b3b-2.jpg",
+"https://i.ibb.co/qLmwKqfT/image-processing20250905-1-5b7b3b.jpg"
 ];
 
 // ============================
@@ -48,7 +77,6 @@ const frutas = [
 // ============================
 
 loginBtn.addEventListener("click", () => {
-
   if (!nombreInput.value || !numberInput.value) {
     alert("Completa los datos");
     return;
@@ -62,123 +90,3 @@ loginBtn.addEventListener("click", () => {
 
   cargarOfertas();
 });
-
-// ============================
-// GENERAR TOKEN
-// ============================
-
-function generarToken() {
-  return Math.random().toString(36).substring(2) + Date.now();
-}
-
-// ============================
-// PUBLICAR
-// ============================
-
-publicarBtn.addEventListener("click", async () => {
-
-  const das = [];
-  document.querySelectorAll("#das .slot").forEach(s=>{
-    if(s.dataset.img) das.push(s.dataset.img);
-  });
-
-  const quieres = [];
-  document.querySelectorAll("#quieres .slot").forEach(s=>{
-    if(s.dataset.img) quieres.push(s.dataset.img);
-  });
-
-  if(das.length === 0 || quieres.length === 0){
-    alert("Completa la oferta");
-    return;
-  }
-
-  const ownerToken = generarToken();
-
-  await supabase.from("ofertas").insert({
-    usuario: usuarioActual,
-    numero: numeroActual,
-    das,
-    quieres,
-    owner_token: ownerToken
-  });
-
-  localStorage.setItem("ownerToken", ownerToken);
-
-  cargarOfertas();
-});
-
-// ============================
-// CARGAR OFERTAS
-// ============================
-
-async function cargarOfertas() {
-
-  const { data } = await supabase
-    .from("ofertas")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  ofertasDiv.innerHTML = "";
-
-  const tokenLocal = localStorage.getItem("ownerToken");
-
-  data.forEach(oferta => {
-
-    let botones = `
-      <button onclick="aceptarOferta('${oferta.numero}','${oferta.usuario}')">
-        Aceptar
-      </button>
-    `;
-
-    if(oferta.owner_token === tokenLocal){
-      botones += `
-        <button onclick="eliminarOferta('${oferta.id}')">
-          🗑 Eliminar
-        </button>
-      `;
-    }
-
-    const card = document.createElement("div");
-    card.classList.add("oferta-card");
-
-    card.innerHTML = `
-      <strong>${oferta.usuario}</strong>
-      <p>🎁 Da:</p>
-      ${oferta.das.map(img=>`<img src="${img}" width="50">`).join("")}
-      <p>🎯 Quiere:</p>
-      ${oferta.quieres.map(img=>`<img src="${img}" width="50">`).join("")}
-      ${botones}
-    `;
-
-    ofertasDiv.appendChild(card);
-  });
-}
-
-// ============================
-// ELIMINAR
-// ============================
-
-async function eliminarOferta(id){
-  await supabase.from("ofertas").delete().eq("id", id);
-  cargarOfertas();
-}
-
-// ============================
-// ACEPTAR
-// ============================
-
-function aceptarOferta(numero, usuario){
-  const mensaje = `Hola ${usuario}, quiero aceptar tu trade 🔥`;
-  window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`);
-}
-
-// ============================
-// TIEMPO REAL
-// ============================
-
-supabase
-  .channel("realtime-ofertas")
-  .on("postgres_changes", { event: "*", schema: "public", table: "ofertas" },
-    () => cargarOfertas()
-  )
-  .subscribe();
